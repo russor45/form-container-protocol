@@ -24,9 +24,8 @@ This protocol formalizes the behavioral contract for form containers—how they 
 
 ```text
 /spec/                    # Canonical spec and appendices
-/src/                     # ShadCN Vue, Material UI, etc.
+/src/                     # Reference implementations (ShadCN Vue, Material UI, etc.)
 /docs/                    # Protocol at a glance, FAQ, changelog
-/tests/                   # Unit, integration, accessibility tests
 ```
 
 ---

@@ -32,10 +32,10 @@
         │ SUCCESS          │  │ ERROR                  │  │ BLOCKED                  │
         │ status='success' │  │ status='error'         │  │ status='blocked'         │
         └──────────────────┘  └────────────────────────┘  └──────────────────────────┘
-                 │                     │                               │
-                 │ closeOnSuccess      │                               │ remain open
-                 │ = true              │                               │ show reason
-                 ▼                     ▼                               ▼
+                 │                      │                               │
+                 │ closeOnSuccess       │                               │ remain open
+                 │ = true               │                               │ show reason
+                 ▼                      ▼                               ▼
  ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
  │  CLOSED (post-success)     │   OPENED (error state)            │   OPENED (blocked state)     │
  │  open=false                │   open=true                       │   open=true                  │

@@ -291,11 +291,11 @@ Implementations must map each position to appropriate container behavior:
 
 ### Appendices
 
-- [A: Position Reference](spec/appendices/A-position-reference.md)
-- [B: Implementation Examples](spec/appendices/B-implementation-examples.md)
-- [C: Migration Guide](spec/appendices/C-migration-guide.md)
-- [D: Common Patterns](spec/appendices/D-common-patterns.md)
-- [E: Testing Guidelines](spec/appendices/E-testing-guidelines.md)
-- [F: Mental Model](spec/appendices/F-mental-model.md)
-- [G: Slot Contracts](spec/appendices/G-slot-contracts.md)
-- [H: ARIA Mapping](spec/appendices/H-aria-mapping.md)
+- [A: Position Reference](appendices/A-position-reference.md)
+- [B: Implementation Examples](appendices/B-implementation-examples.md)
+- [C: Migration Guide](appendices/C-migration-guide.md)
+- [D: Common Patterns](appendices/D-common-patterns.md)
+- [E: Testing Guidelines](appendices/E-testing-guidelines.md)
+- [F: Mental Model](appendices/F-mental-model.md)
+- [G: Slot Contracts](appendices/G-slot-contracts.md)
+- [H: ARIA Mapping](appendices/H-aria-mapping.md)
