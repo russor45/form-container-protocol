@@ -95,5 +95,3 @@ Container embedded within the natural document flow. Commonly implemented as exp
 │  Content Below                  │
 └─────────────────────────────────┘
 ```
-
----

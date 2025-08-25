@@ -1,6 +1,6 @@
-## Appendix D: Common Patterns
+## Appendix B: Common Patterns
 
-#### Settings Modal
+### Settings Form
 
 ```typescript
 <FormContainer
@@ -8,12 +8,24 @@
   open={showSettings}
   onOpenChange={setShowSettings}
   onSubmit={handleSettingsSubmit}
+  closeOnSuccess={true}
 >
-  <!-- Form content -->
+  <FormHeader>Application Settings</FormHeader>
+  <FormBody>
+    <input name="theme" type="select" />
+    <input name="language" type="select" />
+    <input name="notifications" type="checkbox" />
+  </FormBody>
+  <FormFooter>
+    <button type="submit">Save Settings</button>
+    <button type="button" onClick={() => setShowSettings(false)}>
+      Cancel
+    </button>
+  </FormFooter>
 </FormContainer>
 ```
 
-#### Responsive User Profile Panel
+### Responsive User Profile Panel
 
 ```typescript
 <FormContainer
@@ -21,20 +33,34 @@
   mobilePosition="bottom"
   open={showProfile}
   onOpenChange={setShowProfile}
-  onSubmit={handleProfileSubmit}
+  onSubmit={handleProfileUpdate}
+  preventCloseWhenDirty={true}
+  onCloseStart={handleUnsavedChanges}
 >
-  <!-- Profile form -->
+  <FormHeader>Edit Profile</FormHeader>
+  <FormBody>
+    <input name="firstName" />
+    <input name="lastName" />
+    <input name="email" type="email" />
+    <textarea name="bio" />
+  </FormBody>
+  <FormFooter>
+    <button type="submit">Update Profile</button>
+    <button type="button" onClick={() => setShowProfile(false)}>
+      Cancel
+    </button>
+  </FormFooter>
 </FormContainer>
 ```
 
-#### Filter Drawer with Performance Optimization
+### Filter Drawer
 
 ```typescript
 <FormContainer
   position="bottom"
   open={showFilters}
   onOpenChange={setShowFilters}
-  onSubmit={handleFilterSubmit}
+  onSubmit={handleApplyFilters}
   closeOnSuccess={false}
   lazy={true}
 >
@@ -57,7 +83,7 @@
 </FormContainer>
 ```
 
-### Inline Edit Form  with Close Prevention
+### Inline Edit Form
 
 ```typescript
 <FormContainer
@@ -66,6 +92,7 @@
   onOpenChange={setIsEditing}
   onSubmit={handleSaveChanges}
   preventCloseWhenDirty={true}
+  onCloseStart={confirmDiscardChanges}
 >
   <FormBody>
     <input name="title" defaultValue={item.title} />
@@ -85,6 +112,7 @@
 ```typescript
 <FormContainer
   position="top"
+  mobilePosition="bottom"
   open={showQuickAction}
   onOpenChange={setShowQuickAction}
   onSubmit={handleQuickSubmit}
@@ -101,32 +129,4 @@
     </button>
   </FormFooter>
 </FormContainer>
-```
-
-### Native HTML Form Integration
-
-For consumers needing native form API access:
-
-```typescript
-// Pattern for native validation integration
-const MyFormContainer = ({ onSubmit }) => {
-  const formRef = useRef<HTMLFormElement>(null)
-  
-  const handleProtocolSubmit = async (data) => {
-    // Optional: Use native validation first
-    if (!formRef.current?.checkValidity()) {
-      return { status: 'error', errors: { /* ... */ } }
-    }
-    
-    return onSubmit(data)
-  }
-  
-  return (
-    <FormContainer onSubmit={handleProtocolSubmit}>
-      <form ref={formRef}>
-        {/* Your form fields */}
-      </form>
-    </FormContainer>
-  )
-}
 ```

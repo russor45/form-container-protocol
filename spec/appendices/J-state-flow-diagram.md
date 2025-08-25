@@ -1,48 +1,6 @@
 ## Appendix J: Form Container State Flow
 
-```text
- ┌───────────────────────────────────────────────────────────────┐
- │                      INITIALIZE (Closed)                      │
- │  open = false, isDirty = false, isSubmitting = false          │
- └───────────────┬───────────────────────────────────────────────┘
-                 │ onOpenChange(true)
-                 ▼
- ┌───────────────────────────────────────────────────────────────┐
- │                          OPENED                               │
- │  open = true, isDirty = false, isSubmitting = false           │
- └───────────────┬───────────────────────────────────────────────┘
-                 │ user edits form
-                 ▼
- ┌───────────────────────────────────────────────────────────────┐
- │                        DIRTY STATE                            │
- │  open = true, isDirty = true, isSubmitting = false            │
- │  → fires onDirtyChange(true)                                  │
- └───────────────┬───────────────────────────────────────────────┘
-                 │ user submits
-                 ▼
- ┌───────────────────────────────────────────────────────────────┐
- │                     SUBMITTING                                │
- │  open = true, isSubmitting = true                             │
- │  → disables inputs, shows loading state                       │
- └───────────────┬───────────────────────────────────────────────┘
-                 │ onSubmit resolves with:
-                 ├──────────────────────┬───────────────────────────────┐
-                 ▼                      ▼                               ▼
-        ┌──────────────────┐  ┌────────────────────────┐  ┌──────────────────────────┐
-        │ SUCCESS          │  │ ERROR                  │  │ BLOCKED                  │
-        │ status='success' │  │ status='error'         │  │ status='blocked'         │
-        └──────────────────┘  └────────────────────────┘  └──────────────────────────┘
-                 │                      │                               │
-                 │ closeOnSuccess       │                               │ remain open
-                 │ = true               │                               │ show reason
-                 ▼                      ▼                               ▼
- ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
- │  CLOSED (post-success)     │   OPENED (error state)            │   OPENED (blocked state)     │
- │  open=false                │   open=true                       │   open=true                  │
- │  resetOnClose? → reset     │   isDirty remains true            │   isDirty unchanged          │
- │  fires onClose()           │   show field/global errors        │   may trigger notifications  │
- └────────────────────────────┴───────────────────────────────────┴──────────────────────────────┘
-```
+![Form Container Diagram](../../docs/form-container-state-flow.svg)
 
 ### Key Transition Rules
 - Dirty Tracking  

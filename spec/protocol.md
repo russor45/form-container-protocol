@@ -1,7 +1,7 @@
 # Form Container Protocol (FCP)
 
 - **Status:** Draft  
-- **Version:** 0.1.0
+- **Version:** 0.2.0
 - **Created by:** Richard Russoniello, 2025
 
 ---
@@ -12,44 +12,70 @@ This protocol defines a standardized interface for form containers that unifies 
 
 ## 1.1. What This Is & What This Is Not
 
-### What This Is
+### ✅ What This Is
 
-- A **unified form container interface** that consolidates modal, sidebar, drawer, and inline form patterns
-- A **positioning-based abstraction** where container presentation is determined by spatial placement
-- A **form lifecycle contract** that standardizes submission, state management, and closure behavior
-- A **framework-agnostic protocol** ensuring consistent form behavior across implementations
+- **Form‑first architecture:** The form is the primary concern; containers are abstracted, interchangeable shells.
+- **Unified form container interface:** Consolidates modal, sidebar, drawer, and inline patterns.
+- **Positioning-based abstraction:** Container presentation is determined by spatial placement.
+- **Form lifecycle contract:** Standardizes submission, state management, and closure behavior.
+- **Framework-agnostic protocol:** Ensures consistent form behavior across implementations.
+- **LLM-friendly contracts:** Exposes a consistent contract for automated tools, LLMs, and AI-driven agents
 
-### What This Is Not
+### 🚫 What This Is Not
 
-- Visual design specifications, styling systems, or theming frameworks
-- Form field components, validation libraries, or input management systems
-- UI component libraries or complete implementation solutions
-- Backend integration patterns or API communication protocols
-- Animation specifications, transition timing, or motion design
+- **Visual design specification:** Does not define styling or theming.
+- **Complete form solution:** Not focused on fields, validation, or data management.
+- **Animation specification:** Does not specify transition timing or motion design.
+- **Rigid positioning specification:** Does not require pixel-perfect positioning.
+- **Single-framework solution:** Not tied to any specific UI framework.
+- **Container‑first bias:** Does not prioritize container type over form behavior.
+
+### Framework-Agnostic Contract, Framework-Specific Implementation
+
+This protocol defines behavioral contracts that work across frameworks:
+
+- **Contract**: `onSubmit` callback, `isDirty` state exposure, position-based presentation hints
+- **Implementation**: Framework-specific components that honor the contract (React components, Vue composables, Svelte stores, etc.)
+
+### Implementation Flexibility Within Behavioral Boundaries
+
+Implementations have freedom to:
+- ✅ Choose visual design, animations, styling
+- ✅ Adapt positions for responsive breakpoints  
+- ✅ Map positions to their design system's components
+- ✅ Add framework-specific developer experience features
+
+Implementations MUST maintain:
+- ❌ Consistent form lifecycle (open → dirty → submit → close)
+- ❌ Reliable state exposure (`isDirty`, `isSubmitting`)
+- ❌ Position-to-pattern mapping expectations
+- ❌ Submission contract compatibility
 
 ---
 
 ## 2. Scope
 
-- **In Scope:** Form container positioning, form lifecycle management, submission contracts, and state exposure.
+- **In Scope:** Form container positioning, form lifecycle management, submission contracts, state exposure, and responsive behavior.
 - **Out of Scope:** Visual styling, form validation, field components, backend integration, animation specifications.
 
 ---
 
 ## 3. Position-Based Containers
 
-Form containers are positioned using a single `position` property that determines both spatial placement and container behavior. Each position maps to familiar UI patterns while maintaining consistent form lifecycle management.
+Form containers MUST expose a single `position` property that determines both spatial placement and container behavior. Each position MUST map to an implementation specific container pattern.
 
-### Position Values
+The `position` property MUST accept only the following six values: 
 
-- **`center`** — Container positioned centrally, typically as a modal dialog
-- **`left`** — Container anchored to left edge, typically as a left sidebar
-- **`right`** — Container anchored to right edge, typically as a right sidebar
-- **`top`** — Container anchored to top edge, typically as a top drawer
-- **`bottom`** — Container anchored to bottom edge, typically as a bottom drawer
-- **`inline`** — Container embedded within content flow as an inline form
+- **center** — Container positioned centrally, is typically implemented as a modal dialog
+- **left** — Container anchored to left edge, is typically implemented as a left sidebar
+- **right** — Container anchored to right edge, is typically implemented as a right sidebar
+- **top** — Container anchored to top edge, is typically implemented as a top drawer
+- **bottom** — Container anchored to bottom edge, is typically implemented as a bottom drawer
+- **inline** — Container embedded within content flow, is typically implemented as an inline form
 
 ### Position-to-Pattern Mapping
+
+ Implementations MUST support all six positions and map each to its corresponding container pattern as described. Custom or additional position values are NOT permitted. Any value outside this set MUST be rejected or ignored by implementations.
 
 | Position | Common Implementation | Typical Use Case                        |
 | -------- | --------------------- | --------------------------------------- |
@@ -59,6 +85,8 @@ Form containers are positioned using a single `position` property that determine
 | `top`    | Top Drawer            | Notification forms, quick actions       |
 | `bottom` | Bottom Drawer         | Mobile forms, filter panels             |
 | `inline` | Inline Form           | Edit-in-place, embedded forms           |
+
+> **Note:** The "Common" and "Typical Use Case" column provides illustrative examples and is not prescriptive. Implementations may support additional use cases as appropriate.
 
 ---
 
@@ -76,14 +104,21 @@ interface FormContainerProps {
     data: Record<string, any>,
   ) => void | SubmitResult | Promise<SubmitResult>
 
+  // Responsive positioning (optional)
+  mobilePosition?: 'top' | 'bottom' | 'left' | 'right' | 'center' | 'inline' // default: undefined
+
   // Form behavior (optional)
   closeOnSuccess?: boolean // default: true
-  resetOnClose?: boolean // default: false
   preventCloseWhenDirty?: boolean // default: false
 
   // Event handlers (optional)
-  onDirtyChange?: (isDirty: boolean) => void
-  onClose?: () => void
+  onDirtyChange?: (isDirty: boolean) => void // default: undefined
+  onCloseStart?: () => Promise<boolean> | boolean // default: undefined
+  onCloseComplete?: () => void // default: undefined
+
+  // Performance hints (optional)
+  lazy?: boolean // default: false
+  debounceMs?: number // default: 300
 }
 ```
 
@@ -92,87 +127,62 @@ interface FormContainerProps {
 | Property                | Default Value | Description                                                     |
 | ----------------------- | ------------- | --------------------------------------------------------------- |
 | `closeOnSuccess`        | `true`        | Automatically closes container after successful form submission |
-| `resetOnClose`          | `false`       | Preserves form data when container is closed                    |
 | `preventCloseWhenDirty` | `false`       | Allows closing container with unsaved changes                   |
-
-### Usage Examples
-
-#### Settings Modal
-
-```typescript
-<FormContainer
-  position="center"
-  open={showSettings}
-  onOpenChange={setShowSettings}
-  onSubmit={handleSettingsSubmit}
->
-  <!-- Form content -->
-</FormContainer>
-```
-
-#### User Profile Sidebar
-
-```typescript
-<FormContainer
-  position="right"
-  open={showProfile}
-  onOpenChange={setShowProfile}
-  onSubmit={handleProfileSubmit}
-  resetOnClose={true}
->
-  <!-- Profile form -->
-</FormContainer>
-```
-
-#### Mobile Filter Drawer
-
-```typescript
-<FormContainer
-  position="bottom"
-  open={showFilters}
-  onOpenChange={setShowFilters}
-  onSubmit={handleFilterSubmit}
-  closeOnSuccess={false}
->
-  <!-- Filter options -->
-</FormContainer>
-```
-
-#### Inline Edit Form
-
-```typescript
-<FormContainer
-  position="inline"
-  open={isEditing}
-  onOpenChange={setIsEditing}
-  onSubmit={handleInlineSubmit}
-  preventCloseWhenDirty={true}
->
-  <!-- Inline edit fields -->
-</FormContainer>
-```
+| `lazy`                  | `false`       | Loads content immediately when component mounts                 |
+| `debounceMs`            | `300`         | Debounce duration for dirty state change notifications         |
 
 ---
 
-## 5. Submission Contract
+## 5. Responsive Positioning
+
+The `mobilePosition` property MUST allow configuration of the container’s position for mobile viewports. Implementations MUST transition at the mobile breakpoint of exactly `768px`.
+
+### Default Mobile Mappings
+
+When `mobilePosition` is not specified, implementations SHOULD use these sensible defaults:
+
+| Desktop Position | Default Mobile Position | Rationale                           |
+| ---------------- | ----------------------- | ----------------------------------- |
+| `left`           | `bottom`                | Navigation drawer → bottom sheet    |
+| `right`          | `bottom`                | Details panel → bottom drawer       |
+| `center`         | `center`                | Modal dialog remains modal          |
+| `top`            | `bottom`                | Top drawer → bottom drawer          |
+| `bottom`         | `bottom`                | Bottom drawer remains bottom        |
+| `inline`         | `inline`                | Inline form remains inline          |
+
+### Position Validation
+
+Implementations SHOULD validate responsive position transitions to prevent inappropriate combinations:
+
+| From Position | Valid Target Positions         |
+| ------------- | ------------------------------- |
+| `center`      | `center`, `bottom`              |
+| `left`        | `left`, `bottom`, `center`      |
+| `right`       | `right`, `bottom`, `center`     |
+| `top`         | `top`, `bottom`, `center`       |
+| `bottom`      | `bottom`, `center`              |
+| `inline`      | `inline`                        |
+
+---
+
+## 6. Submission Contract
 
 ### SubmitResult
 
 ```typescript
-type SubmitResult =
-  | { status: 'success'; data?: Record<string, unknown> }
-  | {
-      status: 'error'
-      errors: { global?: string[]; fields?: Record<string, string> }
-    }
-  | { status: 'blocked'; reason: string }
+type SubmitResult = 
+  | { status: 'success'; data?: any }
+  | { status: 'error'; errors: ErrorDetails; retry?: () => void }
+  | { status: 'blocked'; reason: string; allowOverride?: boolean }
+  | { status: 'pending'; progress?: number }
 ```
 
 - **`success`**: Indicates successful submission completion
 - **`error`**: Indicates submission failure with field-level and global error details
 - **`blocked`**: Indicates intentional prevention due to business logic constraints
+- **`pending`**: Indicates that the submission is in progress
 
-Container implementations interpret these results to determine closure behavior, error display, and state management.
+Container implementations SHOULD interpret these results to determine closure behavior, error display, and state management.
 
 ### Example Usage
 
@@ -191,13 +201,21 @@ Container implementations interpret these results to determine closure behavior,
 
 // Blocked submission
 { status: 'blocked', reason: 'Insufficient permissions' }
+
+
+// Pending submission (e.g., awaiting server response or async validation)
+{ status: 'pending', message: 'Submitting form, please wait…' }
 ```
+
+### Exception Handling
+
+Unhandled exceptions thrown by the `onSubmit` callback SHOULD be handled by implementation-specific behavior. Consumers SHOULD catch exceptions and return appropriate `SubmitResult` values to maintain consistent container behavior.
 
 ---
 
-## 6. State Exposure
+## 7. State Exposure
 
-Implementations must expose these states through their standard state management patterns:
+Implementations MUST expose these states through their standard state management patterns:
 
 | State          | Type      | Description                                   |
 | -------------- | --------- | --------------------------------------------- |
@@ -206,49 +224,38 @@ Implementations must expose these states through their standard state management
 
 ---
 
-## 7. Container Lifecycle
+## 8. Container Lifecycle
 
 1. **Initialize** — Container prepares with `isDirty=false` and `isSubmitting=false`
 2. **Open** — Applies positioning and initializes form state
-3. **Interact** — Tracks state changes and manages dirty state notifications
-4. **Submit** — Sets `isSubmitting=true` and invokes `onSubmit` callback
-5. **Process Result**:
-   - `success`: Closes container when `closeOnSuccess=true`, resets when `resetOnClose=true`
+3. **Interact** — Tracks state changes and manages dirty state notifications (debounced by `debounceMs`)
+4. **Close Attempt** — Invokes `onCloseStart` callback; if it returns `false` or rejects, prevents closure
+5. **Submit** — Sets `isSubmitting=true` and invokes `onSubmit` callback
+6. **Process Result**:
+   - `success`: Closes container when `closeOnSuccess=true`
    - `blocked`: Remains open, may trigger application notification systems
    - `error`: Displays validation feedback within container
-6. **Close** — Invokes `onClose` callback, respects `preventCloseWhenDirty` constraints
+7. **Close Complete** — Invokes `onCloseComplete` callback after container is fully closed
 
 ---
 
-## 8. Responsive Behavior
+## 9. Performance Behavior
 
-Implementations may adapt container positioning based on viewport constraints. Responsive behavior is implementation-specific and should follow platform conventions.
+### Lazy Loading
 
-### Common Responsive Patterns
+When `lazy=true`, implementations SHOULD defer content loading until the container opens. This improves initial render performance for forms with expensive content.
 
-- Desktop `right` sidebar → Mobile `bottom` drawer
-- Desktop `center` modal → Mobile `bottom` sheet
-- `inline` containers typically remain inline across breakpoints
+### Debounced Notifications
 
-### Responsive Implementation Example
-
-```typescript
-const position = useMediaQuery('(min-width: 768px)') ? 'right' : 'bottom'
-
-<FormContainer
-  position={position}
-  open={isOpen}
-  onSubmit={handleSubmit}
-/>
-```
+The `debounceMs` property controls the debounce duration for `onDirtyChange` notifications. This prevents excessive callbacks during rapid user input.
 
 ---
 
-## 9. Implementation Requirements
+## 10. Implementation Requirements
 
 ### Positioning Behavior
 
-Implementations must map each position to appropriate container behavior:
+Implementations MUST map each position to appropriate container behavior:
 
 - **`center`**: Modal-style behavior with focus management and backdrop interaction
 - **`left|right`**: Sidebar-style behavior with side-anchored positioning
@@ -257,45 +264,62 @@ Implementations must map each position to appropriate container behavior:
 
 ### Accessibility
 
-- Positioned containers (`center`, `left`, `right`, `top`, `bottom`) should implement appropriate ARIA dialog patterns
-- Inline containers should follow standard form accessibility practices
-- Focus management should be consistent with container positioning behavior
+- Positioned containers (`center`, `left`, `right`, `top`, `bottom`) SHOULD implement appropriate ARIA dialog patterns
+- Inline containers SHOULD follow standard form accessibility practices
+- Focus management SHOULD be consistent with container positioning behavior
 
 ### Form Integration
 
-- All containers must support standard form submission patterns
-- State management (`isDirty`, `isSubmitting`) must be exposed consistently
-- Lifecycle events must fire reliably across all position types
+- All containers MUST render a `<form>` element or equivalent semantic structure
+- State management (`isDirty`, `isSubmitting`) MUST be exposed consistently
+- Lifecycle events MUST fire reliably across all position types
+
+## 10.1. Implementation Guidelines
+
+### Position Interpretation Rules
+
+Implementations MUST map positions to appropriate patterns but MAY adapt the specific presentation:
+
+| Position | Required Pattern | Implementation Freedom |
+|----------|-----------------|----------------------|
+| `center` | Modal-style focus management, backdrop behavior | Visual design, animation style, exact centering method |
+| `left/right` | Sidebar-style anchoring, non-blocking interaction | Overlay vs push-content, slide direction, width |
+| `top/bottom` | Drawer-style edge anchoring, dismissible behavior | Slide animation, height, backdrop treatment |
+| `inline` | Embedded in content flow, no focus trap | Visual boundaries, responsive behavior |
+
+### Responsive Adaptation Requirements
+
+When `mobilePosition` is specified, implementations MUST:
+- Transition at `768px` breakpoint
+- Maintain form state during position changes
+- Preserve form behavior across position transitions
+- Fire appropriate lifecycle events during transitions
+
+### Framework Integration Patterns
+
+Implementations SHOULD follow their framework's conventions while maintaining contract compatibility:
+
+- **React**: Hook-based state management, ref patterns
+- **Vue**: Composable-based state, reactive properties  
+- **Svelte**: Store-based state, reactive declarations
+- **Angular**: Service-based state, reactive forms integration
 
 ---
 
-## 10. Slots
+## 11. Slots
 
-| Slot            | Required | Description                              |
+| Slot            | Required: Yes/No | Description                              |
 | --------------- | -------- | ---------------------------------------- |
-| `header`        | ✅       | Container title and optional description |
-| `body`          | ✅       | Form fields and interactive content      |
-| `footer`        | ✅       | Primary and secondary action elements    |
-| `notifications` | ✅       | Reserved area for inline status messages |
+| `header`        | No       | Container title and optional description |
+| `body`          | Yes      | Form fields and interactive content      |
+| `footer`        | No       | Primary and secondary action elements    |
+| `notifications` | No       | Reserved area for inline status messages |
 
 ---
 
-## 11. Versioning
+## 12. Versioning
 
 - **Specification updates** follow semantic versioning principles
 - **Breaking changes** require major version increment with migration documentation
 - **Implementation compatibility** maintained within major version boundaries
 - **Deprecation notices** provided minimum one minor version before removal
-
----
-
-### Appendices
-
-- [A: Position Reference](appendices/A-position-reference.md)
-- [B: Implementation Examples](appendices/B-implementation-examples.md)
-- [C: Migration Guide](appendices/C-migration-guide.md)
-- [D: Common Patterns](appendices/D-common-patterns.md)
-- [E: Testing Guidelines](appendices/E-testing-guidelines.md)
-- [F: Mental Model](appendices/F-mental-model.md)
-- [G: Slot Contracts](appendices/G-slot-contracts.md)
-- [H: ARIA Mapping](appendices/H-aria-mapping.md)

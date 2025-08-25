@@ -1,0 +1,37 @@
+<!--
+Original ASCII mental model diagram for reference:
+
+                    ┌─────────────────────────────┐
+                    │      Form Container         │
+                    │    (Behavioral Contract)    │
+                    │-----------------------------│
+                    │ • Form lifecycle mgmt       │
+                    │ • Submission handling       │
+                    │ • State exposure (dirty)    │
+                    │ • Event coordination        │
+                    │ • Position-based intent     │
+                    └─────────────┬───────────────┘
+                                  │
+                                  ▼
+            ┌─────────────────────────────────────────────────┐
+            │         Position-Based Presentation             │
+            │        (Implementation Determines UI)           │
+            │-------------------------------------------------│
+            │  center     left/right    top/bottom    inline  │
+            │  ─────────  ──────────── ────────────── ─────── │
+            │  • Modal    • Sidebar    • Drawer       • Embed │
+            │  • Dialog   • Sheet      • Slide-up     • Flow  │
+            │  • Overlay  • Side-out   • Push-down    • Page  │
+            └─────────────────┬───────┬───────────────────────┘
+                               │       │
+                               ▼       ▼
+                  ┌─────────────────┐   ┌─────────────────┐
+                  │ Implementation  │   │ Implementation  │
+                  │   Libraries     │   │   Adaptation    │
+                  │-----------------│   │-----------------│
+                  │ • ShadCN        │   │ • Responsive    │
+                  │ • Material UI   │   │ • Platform      │
+                  │ • Ant Design    │   │ • Theme         │
+                  │ • Custom        │   │ • Accessibility │
+                  └─────────────────┘   └─────────────────┘
+-->
