@@ -336,5 +336,5 @@ Implementations SHOULD follow their framework's conventions while maintaining co
 - [F: Mental Model](appendices/F-mental-model.md)
 - [G: Slot Contracts](appendices/G-slot-contracts.md)
 - [H: ARIA Mapping](appendices/H-aria-mapping.md)
-- [I: ARIA Mapping](appendices/I-compliance-checklist.md)
-- [J: ARIA Mapping](appendices/J-state-flow-diagram.md)
+- [I: Compliance Checklist](appendices/I-compliance-checklist.md)
+- [J: State Flow Diagram](appendices/J-state-flow-diagram.md)
