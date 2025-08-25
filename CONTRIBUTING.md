@@ -38,7 +38,7 @@ Use semantic branch naming:
 
 ### 3. Make Your Changes
 
-- Follow spec formatting conventions (`spec/README.md`)
+- Follow spec formatting conventions [spec/README.md](spec/README.md)
 - Ensure accessibility contracts are preserved
 - Update tests and examples if applicable
 
@@ -93,7 +93,7 @@ We follow the [Contributor Covenant](https://www.contributor-covenant.org/) to e
 
 ## 📬 Questions or Feedback?
 
-Open an issue or reach out via [Discussions](https://github.com/your-repo/discussions). We welcome critique, questions, and strategic input.
+Open an issue or reach out via [Discussions](https://github.com/russor45/form-container-protocol/discussions). We welcome critique, questions, and strategic input.
 
 ---
 

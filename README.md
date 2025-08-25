@@ -22,18 +22,18 @@ This protocol formalizes the behavioral contract for form containers—how they 
 
 ## 📁 Repository Structure
 
-`text
+```text
 /spec/                    # Canonical spec and appendices
 /src/                     # ShadCN Vue, Material UI, etc.
 /docs/                    # Protocol at a glance, FAQ, changelog
 /tests/                   # Unit, integration, accessibility tests
-`
+```
 
 ---
 
 ## 📜 Specification
 
-The full protocol is defined in spec/protocol.md, covering:
+The full protocol is defined in [spec/protocol.md](spec/protocol.md), covering:
 
 1. Mounting & lifecycle
 2. Validation boundaries
