@@ -329,10 +329,12 @@ Implementations SHOULD follow their framework's conventions while maintaining co
 ### Appendices
 
 - [A: Position Reference](appendices/A-position-reference.md)
-- [B: Implementation Examples](appendices/B-implementation-examples.md)
+- [B: Implementation Examples](appendices/B-cross-framework-examples.md)
 - [C: Migration Guide](appendices/C-migration-guide.md)
 - [D: Common Patterns](appendices/D-common-patterns.md)
 - [E: Testing Guidelines](appendices/E-testing-guidelines.md)
 - [F: Mental Model](appendices/F-mental-model.md)
 - [G: Slot Contracts](appendices/G-slot-contracts.md)
 - [H: ARIA Mapping](appendices/H-aria-mapping.md)
+- [I: ARIA Mapping](appendices/I-compliance-checklist.md)
+- [J: ARIA Mapping](appendices/J-state-flow-diagram.md)
