@@ -1,4 +1,4 @@
-## Appendix J: Form Container State Flow
+## Appendix J
 
 ![Form Container Diagram](../../docs/form-container-state-flow.svg)
 
