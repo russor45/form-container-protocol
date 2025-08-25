@@ -4,6 +4,16 @@ A framework-agnostic, schema-driven protocol for orchestrating accessible, agent
 
 ---
 
+## 🚧 Draft Spec - Feedback Welcome
+
+This branch contains a **draft of the Form Container Protocol spec**.  
+We're actively seeking feedback from framework authors, accessibility experts, and UI architects.  
+Please share thoughts via [GitHub Issues](https://github.com/russor45/form-container-protocol/issues) or [Discussions](https://github.com/russor45/form-container-protocol/discussions).
+
+> Note: This is a working draft and subject to change.
+
+---
+
 ## 🚀 Purpose
 
 This protocol formalizes the behavioral contract for form containers—how they mount, validate, submit, and communicate state—without prescribing implementation details. It empowers design systems to remain flexible while ensuring consistency, accessibility, and composability.
