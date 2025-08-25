@@ -50,7 +50,7 @@ Yes. The protocol is designed to be **LLM-compatible**, with predictable slot na
 
 ## 📦 How do I implement it?
 
-- Start with the [Reference Implementation](../src/shadcn-vue/README.md)
+- Start with the [Reference Implementation](../src/references/shadcn-vue/README.md)
 - Follow the [Spec](../spec/protocol.md) and [Appendices](../spec/appendices/)
 - Use the [Compliance Checklist](../spec/appendices/I-compliance-checklist.md) to validate your implementation
 
@@ -64,7 +64,7 @@ Yes. The protocol is compatible with Radix, Material, Carbon, and other systems.
 
 ## 🧠 How do I contribute?
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. We welcome spec refinements, accessibility audits, new implementations, and documentation improvements.
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines. We welcome spec refinements, accessibility audits, new implementations, and documentation improvements.
 
 ---
 

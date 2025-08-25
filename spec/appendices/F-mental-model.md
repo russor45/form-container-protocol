@@ -1,4 +1,4 @@
-## Appendix F: Mental Model - Form-First, Presentation Agnostic
+## Appendix F: Mental Model
 
 ![Form Container Diagram](../../docs/mental-model.svg)
 

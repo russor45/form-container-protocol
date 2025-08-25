@@ -310,10 +310,10 @@ Implementations SHOULD follow their framework's conventions while maintaining co
 
 | Slot            | Required: Yes/No | Description                              |
 | --------------- | -------- | ---------------------------------------- |
-| `header`        | No       | Container title and optional description |
-| `body`          | Yes      | Form fields and interactive content      |
-| `footer`        | No       | Primary and secondary action elements    |
-| `notifications` | No       | Reserved area for inline status messages |
+| `header`        | ❌ No       | Container title and optional description |
+| `body`          | ✅ Yes      | Form fields and interactive content      |
+| `footer`        | ❌ No       | Primary and secondary action elements    |
+| `notifications` | ❌ No       | Reserved area for inline status messages |
 
 ---
 
@@ -323,3 +323,16 @@ Implementations SHOULD follow their framework's conventions while maintaining co
 - **Breaking changes** require major version increment with migration documentation
 - **Implementation compatibility** maintained within major version boundaries
 - **Deprecation notices** provided minimum one minor version before removal
+
+---
+
+### Appendices
+
+- [A: Position Reference](appendices/A-position-reference.md)
+- [B: Implementation Examples](appendices/B-implementation-examples.md)
+- [C: Migration Guide](appendices/C-migration-guide.md)
+- [D: Common Patterns](appendices/D-common-patterns.md)
+- [E: Testing Guidelines](appendices/E-testing-guidelines.md)
+- [F: Mental Model](appendices/F-mental-model.md)
+- [G: Slot Contracts](appendices/G-slot-contracts.md)
+- [H: ARIA Mapping](appendices/H-aria-mapping.md)
