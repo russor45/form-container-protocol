@@ -50,13 +50,21 @@ See appendices for migration guides, mental models, and implementation examples.
 
 ---
 
-## 🧪 Reference Implementations
+## 🧪 Implementations
 
-- ShadCN Vue
-- Material React
-- Ant Design
+**Official SDKs:**
 
-Each includes usage examples, slot mapping, and test coverage.
+- [`@form-container/vue-sdk`](src/references/shadcn-vue)
+- [`@form-container/react-sdk`](src/references/material-react)
+- [`@form-container/ant-design-sdk`](src/references/ant-design)
+
+**Consumer Examples:**
+
+- [shadcn-vue](src/consumers/shadcn-vue)
+- [material-react](src/consumers/material-react)
+- [ant-design](src/consumers/ant-design)
+
+
 
 ---
 
