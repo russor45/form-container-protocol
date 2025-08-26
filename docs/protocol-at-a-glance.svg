@@ -30,7 +30,7 @@
   </defs>
 
   <rect width="1000" height="1000" fill="#fafafa"/>
-  <text x="500" y="30" text-anchor="middle" fill="#111827" font-family="Inter, sans-serif" font-size="28" font-weight="700">Form Container Protocol — At a Glance</text>
+  <text x="500" y="30" text-anchor="middle" fill="#111827" font-family="Inter, sans-serif" font-size="28" font-weight="700">At a Glance</text>
 
   <!-- Layer 1 -->
   <rect x="150" y="60" width="700" height="190" rx="14" fill="url(#layer1)" filter="url(#shadow)"/>
