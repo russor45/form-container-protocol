@@ -1,5 +1,5 @@
 <!--
-Original ASCII mental model diagram for reference:
+Original ASCII diagram for reference:
 
                     ┌─────────────────────────────┐
                     │      Form Container         │
